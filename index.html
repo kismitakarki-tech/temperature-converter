@@ -3,100 +3,95 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Unit Converter Cards</title>
+<title>Unit Converter Table</title>
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #f0f4f8;
-    margin: 0;
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  h1 { text-align: center; color: #111827; margin-bottom: 30px; }
-  .cards-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 15px;
-    width: 100%;
-    max-width: 900px;
-    margin-bottom: 30px;
-  }
-  .card {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    text-align: center;
-    cursor: pointer;
-    transition: 0.2s;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-  }
-  .card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-  }
-  .card.active {
-    border: 2px solid #3b82f6;
-  }
-  .converter-box {
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    max-width: 500px;
-    width: 100%;
-  }
-  label { display:block; margin: 12px 0 6px; font-weight:600; }
-  select, input {
-    width: 100%;
-    padding: 8px 10px;
-    margin-bottom: 12px;
-    border-radius: 8px;
-    border: 1px solid #d1d5db;
-    font-size: 14px;
-  }
-  .result {
-    margin-top: 10px;
-    padding: 10px;
-    background: #f9fafb;
-    border-radius: 8px;
-    font-weight: bold;
-  }
+  body { font-family: Arial, sans-serif; background: #f3f4f6; padding: 20px; display:flex; flex-direction:column; align-items:center; }
+  h1 { margin-bottom: 20px; }
+  .converter-box { background:white; padding:20px; border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.1); max-width:600px; width:100%; }
+  select, input { width:100%; padding:8px 10px; margin-bottom:12px; border-radius:8px; border:1px solid #d1d5db; font-size:14px; }
+  table { width:100%; border-collapse: collapse; margin-top:15px; }
+  th, td { padding:10px; text-align:left; border-bottom:1px solid #e5e7eb; }
+  th { background:#f9fafb; }
 </style>
 </head>
 <body>
 <h1>Unit Converter</h1>
+<div class="converter-box">
+  <label for="quantity">Select Quantity:</label>
+  <select id="quantity">
+    <option value="">--Choose--</option>
+    <option value="temperature">Temperature</option>
+    <option value="length">Length</option>
+    <option value="mass">Mass</option>
+    <option value="area">Area</option>
+    <option value="volume">Volume</option>
+    <option value="speed">Speed</option>
+    <option value="time">Time</option>
+    <option value="frequency">Frequency</option>
+    <option value="pressure">Pressure</option>
+    <option value="energy">Energy</option>
+    <option value="fuel">Fuel Economy</option>
+    <option value="storage">Digital Storage</option>
+    <option value="datarate">Data Transfer Rate</option>
+    <option value="angle">Plane Angle</option>
+  </select>
 
-<div class="cards-container" id="cards-container">
-  <div class="card" data-quantity="temperature">Temperature</div>
-  <div class="card" data-quantity="length">Length</div>
-  <div class="card" data-quantity="mass">Mass</div>
-  <div class="card" data-quantity="area">Area</div>
-  <div class="card" data-quantity="volume">Volume</div>
-  <div class="card" data-quantity="speed">Speed</div>
-  <div class="card" data-quantity="time">Time</div>
-  <div class="card" data-quantity="frequency">Frequency</div>
-  <div class="card" data-quantity="pressure">Pressure</div>
-  <div class="card" data-quantity="energy">Energy</div>
-  <div class="card" data-quantity="fuel">Fuel Economy</div>
-  <div class="card" data-quantity="storage">Digital Storage</div>
-  <div class="card" data-quantity="datarate">Data Transfer Rate</div>
-  <div class="card" data-quantity="angle">Plane Angle</div>
-</div>
-
-<div class="converter-box" id="converter-box" style="display:none;">
-  <h2 id="converter-title"></h2>
   <label for="value">Enter Value:</label>
   <input type="number" id="value" value="0">
-  <label for="unit">Select Unit:</label>
-  <select id="unit"></select>
-  <div class="result" id="result"></div>
+
+  <table id="result-table" style="display:none;">
+    <thead><tr><th>Unit</th><th>Value</th></tr></thead>
+    <tbody id="result-body"></tbody>
+  </table>
 </div>
 
 <script>
-// Units and converters as before
+// Utilities
 function round2(x){return Math.round(x*100)/100}
+
+// Converters
 const converters = {
   temperature: (val, unit) => { let c=unit==="C"?val:unit==="F"?(val-32)*5/9:val-273.15; return {C:round2(c), F:round2(c*9/5+32), K:round2(c+273.15)}; },
-  length: (val, unit) => { let m=uni
+  length: (val, unit) => { let m=unit==="m"?val:unit==="cm"?val/100:unit==="km"?val*1000:unit==="ft"?val*0.3048:val*0.0254; return {m:round2(m), cm:round2(m*100), km:round2(m/1000), ft:round2(m/0.3048), in:round2(m/0.0254), mi:round2(m/1609.344)}; },
+  mass: (val, unit) => { let kg=unit==="kg"?val:unit==="g"?val/1000:unit==="lb"?val/2.2046226218:val/35.274; return {kg:round2(kg), g:round2(kg*1000), lb:round2(kg*2.2046226218), oz:round2(kg*35.274)}; },
+  area: (val, unit) => { let m2=unit==="m2"?val:unit==="cm2"?val/10000:val*0.092903; return {m2:round2(m2), cm2:round2(m2*10000), ft2:round2(m2/0.092903)}; },
+  volume: (val, unit) => { let m3=unit==="m3"?val:val/1000; return {m3:round2(m3), L:round2(m3*1000)}; },
+  speed: (val, unit) => { let mps=unit==="m/s"?val:unit==="km/h"?val/3.6:val/2.23693629; return {"m/s":round2(mps), "km/h":round2(mps*3.6), mph:round2(mps*2.23693629)}; },
+  time: (val, unit) => { let s=unit==="s"?val:unit==="min"?val*60:val*3600; return {s:round2(s), min:round2(s/60), h:round2(s/3600)}; },
+  frequency: (val, unit) => { let hz=unit==="Hz"?val:unit==="kHz"?val*1000:val*1000000; return {Hz:round2(hz), kHz:round2(hz/1000), MHz:round2(hz/1000000)}; },
+  pressure: (val, unit) => { let pa=unit==="Pa"?val:unit==="kPa"?val*1000:val*100000; return {Pa:round2(pa), kPa:round2(pa/1000), bar:round2(pa/100000)}; },
+  energy: (val, unit) => { let J=unit==="J"?val:unit==="kJ"?val*1000:val*4.184; return {J:round2(J), kJ:round2(J/1000), cal:round2(J/4.184)}; },
+  fuel: (val, unit) => unit==="MPG"?{"MPG":val,"L/100km":round2(235.215/val)}:{"MPG":round2(235.215/val),"L/100km":val},
+  storage: (val, unit) => { let B=unit==="B"?val:unit==="KB"?val*1000:unit==="MB"?val*1e6:val*1e9; return {B:round2(B), KB:round2(B/1000), MB:round2(B/1e6), GB:round2(B/1e9)}; },
+  datarate: (val, unit) => { let bps=unit==="bps"?val:unit==="Bps"?val*8:unit==="Kbps"?val*1000:unit==="KBps"?val*8*1000:unit==="Mbps"?val*1e6:val*8e6; return {bps:round2(bps), Bps:round2(bps/8), Kbps:round2(bps/1000), KBps:round2(bps/8000), Mbps:round2(bps/1e6), MBps:round2(bps/8e6)}; },
+  angle: (val, unit) => { let deg=unit==="deg"?val:val*180/Math.PI; return {deg:round2(deg), rad:round2(deg*Math.PI/180)}; }
+};
+
+const quantitySelect = document.getElementById("quantity");
+const valueInput = document.getElementById("value");
+const resultTable = document.getElementById("result-table");
+const resultBody = document.getElementById("result-body");
+
+function updateTable(){
+  const q = quantitySelect.value;
+  let val = parseFloat(valueInput.value);
+  let unit = "default"; // We'll take first unit as default
+  if(isNaN(val)) val=0;
+  if(q==="") { resultTable.style.display="none"; return; }
+  unit = Object.keys(converters )[0]))[0]; // pick first unit as base
+  const res = converters[q](val, unit);
+  resultBody.innerHTML = "";
+  for(const [u,v] of Object.entries(res)){
+    const row = document.createElement("tr");
+    row.innerHTML=`<td>${u}</td><td>${v}</td>`;
+    resultBody.appendChild(row);
+  }
+  resultTable.style.display="table";
+}
+
+quantitySelect.addEventListener("change", updateTable);
+valueInput.addEventListener("input", updateTable);
+
+</script>
+</body>
+</html>
