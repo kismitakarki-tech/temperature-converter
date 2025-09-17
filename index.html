@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fahrenheit to Celsius Converter | Free Online Temperature Tool</title>
+  <meta name="description" content="Free online Fahrenheit to Celsius converter. Instantly convert °F to °C or Celsius to Fahrenheit. Fast, simple, and accurate temperature conversion tool.">
+  <meta name="keywords" content="Fahrenheit to Celsius, Celsius to Fahrenheit, temperature converter, °F to °C, °C to °F, online converter">
+  <meta name="robots" content="index, follow">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f9fc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .converter {
+      background: white;
+      padding: 25px 35px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 340px;
+    }
+    input, select {
+      padding: 8px;
+      margin: 10px 0;
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 16px;
+      text-align: center;
+    }
+    .result {
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+    }
+    .intro {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="converter">
+    <h1>Fahrenheit ⇄ Celsius Converter</h1>
+    <p class="intro">
+      Instantly convert between Fahrenheit (°F) and Celsius (°C). 
+      This free online temperature converter is fast, accurate, and easy to use.
+    </p>
+    <select id="unit">
+      <option value="F">Fahrenheit (°F)</option>
+      <option value="C">Celsius (°C)</option>
+    </select>
+    <input type="number" id="inputTemp" placeholder="Enter temperature">
+    <div class="result" id="result"></div>
+    <p style="margin-top:20px;font-size:13px;color:#666;">
+      Convert Fahrenheit to Celsius or Celsius to Fahrenheit instantly. 
+      Useful for weather, cooking, science, and more.
+    </p>
+  </div>
+
+  <script>
+    const input = document.getElementById("inputTemp");
+    const result = document.getElementById("result");
+    const unit = document.getElementById("unit");
+
+    function convert() {
+      const value = input.value;
+      if (value === "") {
+        result.textContent = "";
+        return;
+      }
+
+      if (unit.value === "F") {
+        const celsius = ((value - 32) * 5/9).toFixed(2);
+        result.textContent = `${value}°F = ${celsius}°C`;
+      } else {
+        const fahrenheit = ((value * 9/5) + 32).toFixed(2);
+        result.textContent = `${value}°C = ${fahrenheit}°F`;
+      }
+    }
+
+    input.addEventListener("input", convert);
+    unit.addEventListener("change", convert);
+  </script>
+</body>
+</html>
