@@ -3,374 +3,194 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Full Interactive Unit Converter</title>
+<title>Interactive Unit Converter</title>
 <style>
   body {
     font-family: Arial, sans-serif;
     background: #f3f4f6;
-    padding: 20px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   h1 { text-align: center; color: #111827; }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #fff;
+  .converter-box {
+    background: white;
+    padding: 25px;
     border-radius: 12px;
-    overflow: hidden;
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-  }
-  th, td {
-    padding: 12px 10px;
-    border-bottom: 1px solid #e5e7eb;
-    text-align: left;
-  }
-  th {
-    background: #f9fafb;
-    font-weight: bold;
-  }
-  input, select {
+    max-width: 500px;
     width: 100%;
-    padding: 6px 8px;
-    margin: 2px 0;
-    border-radius: 6px;
-    border: 1px solid #d1d5db;
   }
-  @media(max-width:800px){
-    table, thead, tbody, th, td, tr { display:block; }
-    th { display:none; }
-    td { position: relative; padding-left: 50%; margin-bottom:12px; }
-    td:before {
-      position:absolute;
-      top:12px;
-      left:12px;
-      width:45%;
-      white-space: nowrap;
-      font-weight:bold;
-    }
-    td:nth-of-type(1):before { content:"Quantity"; }
-    td:nth-of-type(2):before { content:"Value"; }
-    td:nth-of-type(3):before { content:"Unit"; }
-    td:nth-of-type(4):before { content:"Result"; }
+  label { display:block; margin: 12px 0 6px; font-weight:600; }
+  select, input {
+    width: 100%;
+    padding: 8px 10px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+  }
+  .result {
+    margin-top: 10px;
+    padding: 10px;
+    background: #f9fafb;
+    border-radius: 8px;
+    font-weight: bold;
   }
 </style>
 </head>
 <body>
-<h1>Full Interactive Unit Converter</h1>
-<table>
-  <thead>
-    <tr>
-      <th>Quantity</th>
-      <th>Value</th>
-      <th>Unit</th>
-      <th>Result</th>
-    </tr>
-  </thead>
-  <tbody>
-    <!-- Temperature -->
-    <tr>
-      <td>Temperature</td>
-      <td><input type="number" class="temp-input" value="0"></td>
-      <td>
-        <select class="temp-unit">
-          <option value="C">°C</option>
-          <option value="F">°F</option>
-          <option value="K">K</option>
-        </select>
-      </td>
-      <td class="temp-result"></td>
-    </tr>
-    <!-- Length -->
-    <tr>
-      <td>Length</td>
-      <td><input type="number" class="length-input" value="1"></td>
-      <td>
-        <select class="length-unit">
-          <option value="m">Meter (m)</option>
-          <option value="cm">Centimeter (cm)</option>
-          <option value="km">Kilometer (km)</option>
-          <option value="ft">Foot (ft)</option>
-          <option value="in">Inch (in)</option>
-          <option value="mi">Mile (mi)</option>
-        </select>
-      </td>
-      <td class="length-result"></td>
-    </tr>
-    <!-- Mass -->
-    <tr>
-      <td>Mass</td>
-      <td><input type="number" class="mass-input" value="1"></td>
-      <td>
-        <select class="mass-unit">
-          <option value="kg">Kilogram</option>
-          <option value="g">Gram</option>
-          <option value="lb">Pound</option>
-          <option value="oz">Ounce</option>
-        </select>
-      </td>
-      <td class="mass-result"></td>
-    </tr>
-    <!-- Area -->
-    <tr>
-      <td>Area</td>
-      <td><input type="number" class="area-input" value="1"></td>
-      <td>
-        <select class="area-unit">
-          <option value="m2">m²</option>
-          <option value="cm2">cm²</option>
-          <option value="ft2">ft²</option>
-        </select>
-      </td>
-      <td class="area-result"></td>
-    </tr>
-    <!-- Volume -->
-    <tr>
-      <td>Volume</td>
-      <td><input type="number" class="volume-input" value="1"></td>
-      <td>
-        <select class="volume-unit">
-          <option value="m3">m³</option>
-          <option value="L">Liter</option>
-        </select>
-      </td>
-      <td class="volume-result"></td>
-    </tr>
-    <!-- Speed -->
-    <tr>
-      <td>Speed</td>
-      <td><input type="number" class="speed-input" value="1"></td>
-      <td>
-        <select class="speed-unit">
-          <option value="m/s">m/s</option>
-          <option value="km/h">km/h</option>
-          <option value="mph">mph</option>
-        </select>
-      </td>
-      <td class="speed-result"></td>
-    </tr>
-    <!-- Time -->
-    <tr>
-      <td>Time</td>
-      <td><input type="number" class="time-input" value="1"></td>
-      <td>
-        <select class="time-unit">
-          <option value="s">Seconds</option>
-          <option value="min">Minutes</option>
-          <option value="h">Hours</option>
-        </select>
-      </td>
-      <td class="time-result"></td>
-    </tr>
-    <!-- Frequency -->
-    <tr>
-      <td>Frequency</td>
-      <td><input type="number" class="freq-input" value="1"></td>
-      <td>
-        <select class="freq-unit">
-          <option value="Hz">Hz</option>
-          <option value="kHz">kHz</option>
-          <option value="MHz">MHz</option>
-        </select>
-      </td>
-      <td class="freq-result"></td>
-    </tr>
-    <!-- Pressure -->
-    <tr>
-      <td>Pressure</td>
-      <td><input type="number" class="pressure-input" value="1"></td>
-      <td>
-        <select class="pressure-unit">
-          <option value="Pa">Pa</option>
-          <option value="kPa">kPa</option>
-          <option value="bar">bar</option>
-        </select>
-      </td>
-      <td class="pressure-result"></td>
-    </tr>
-    <!-- Energy -->
-    <tr>
-      <td>Energy</td>
-      <td><input type="number" class="energy-input" value="1"></td>
-      <td>
-        <select class="energy-unit">
-          <option value="J">Joule (J)</option>
-          <option value="kJ">kJ</option>
-          <option value="cal">Calorie (cal)</option>
-        </select>
-      </td>
-      <td class="energy-result"></td>
-    </tr>
-    <!-- Fuel Economy -->
-    <tr>
-      <td>Fuel Economy</td>
-      <td><input type="number" class="fuel-input" value="25"></td>
-      <td>
-        <select class="fuel-unit">
-          <option value="MPG">MPG (US)</option>
-          <option value="L/100km">L/100km</option>
-        </select>
-      </td>
-      <td class="fuel-result"></td>
-    </tr>
-    <!-- Digital Storage -->
-    <tr>
-      <td>Digital Storage</td>
-      <td><input type="number" class="storage-input" value="1024"></td>
-      <td>
-        <select class="storage-unit">
-          <option value="B">Bytes</option>
-          <option value="KB">Kilobytes</option>
-          <option value="MB">Megabytes</option>
-          <option value="GB">Gigabytes</option>
-        </select>
-      </td>
-      <td class="storage-result"></td>
-    </tr>
-    <!-- Data Transfer Rate -->
-    <tr>
-      <td>Data Transfer Rate</td>
-      <td><input type="number" class="datarate-input" value="8"></td>
-      <td>
-        <select class="datarate-unit">
-          <option value="bps">bps</option>
-          <option value="Bps">B/s</option>
-          <option value="Kbps">Kbps</option>
-          <option value="KBps">KB/s</option>
-          <option value="Mbps">Mbps</option>
-          <option value="MBps">MB/s</option>
-        </select>
-      </td>
-      <td class="datarate-result"></td>
-    </tr>
-    <!-- Plane Angle -->
-    <tr>
-      <td>Plane Angle</td>
-      <td><input type="number" class="angle-input" value="90"></td>
-      <td>
-        <select class="angle-unit">
-          <option value="deg">Degrees</option>
-          <option value="rad">Radians</option>
-        </select>
-      </td>
-      <td class="angle-result"></td>
-    </tr>
-  </tbody>
-</table>
+
+<h1>Interactive Unit Converter</h1>
+<div class="converter-box">
+  <label for="quantity">Select Quantity:</label>
+  <select id="quantity">
+    <option value="">--Choose--</option>
+    <option value="temperature">Temperature</option>
+    <option value="length">Length</option>
+    <option value="mass">Mass</option>
+    <option value="area">Area</option>
+    <option value="volume">Volume</option>
+    <option value="speed">Speed</option>
+    <option value="time">Time</option>
+    <option value="frequency">Frequency</option>
+    <option value="pressure">Pressure</option>
+    <option value="energy">Energy</option>
+    <option value="fuel">Fuel Economy</option>
+    <option value="storage">Digital Storage</option>
+    <option value="datarate">Data Transfer Rate</option>
+    <option value="angle">Plane Angle</option>
+  </select>
+
+  <div id="converter-area" style="display:none;">
+    <label for="value">Enter Value:</label>
+    <input type="number" id="value" value="0">
+
+    <label for="unit">Select Unit:</label>
+    <select id="unit"></select>
+
+    <div class="result" id="result"></div>
+  </div>
+</div>
 
 <script>
+// Utility functions
 function round2(x){return Math.round(x*100)/100}
 
-// Temperature
-function convTemp(val,unit){
-  let c=unit==="C"?val:unit==="F"?(val-32)*5/9:val-273.15;
-  return {C:round2(c),F:round2(c*9/5+32),K:round2(c+273.15)};
-}
+// Conversion functions
+const converters = {
+  temperature: (val, unit) => {
+    let c = unit==="C"?val:unit==="F"?(val-32)*5/9:val-273.15;
+    return {C:round2(c), F:round2(c*9/5+32), K:round2(c+273.15)};
+  },
+  length: (val, unit) => {
+    let m = unit==="m"?val:unit==="cm"?val/100:unit==="km"?val*1000:unit==="ft"?val*0.3048:val*0.0254;
+    return {m:round2(m), cm:round2(m*100), km:round2(m/1000), ft:round2(m/0.3048), in:round2(m/0.0254), mi:round2(m/1609.344)};
+  },
+  mass: (val, unit) => {
+    let kg = unit==="kg"?val:unit==="g"?val/1000:unit==="lb"?val/2.2046226218:val/35.274;
+    return {kg:round2(kg), g:round2(kg*1000), lb:round2(kg*2.2046226218), oz:round2(kg*35.274)};
+  },
+  area: (val, unit) => {
+    let m2 = unit==="m2"?val:unit==="cm2"?val/10000:val*0.092903;
+    return {m2:round2(m2), cm2:round2(m2*10000), ft2:round2(m2/0.092903)};
+  },
+  volume: (val, unit) => {
+    let m3 = unit==="m3"?val:val/1000;
+    return {m3:round2(m3), L:round2(m3*1000)};
+  },
+  speed: (val, unit) => {
+    let mps = unit==="m/s"?val:unit==="km/h"?val/3.6:val/2.23693629;
+    return {"m/s":round2(mps), "km/h":round2(mps*3.6), mph:round2(mps*2.23693629)};
+  },
+  time: (val, unit) => {
+    let s = unit==="s"?val:unit==="min"?val*60:val*3600;
+    return {s:round2(s), min:round2(s/60), h:round2(s/3600)};
+  },
+  frequency: (val, unit) => {
+    let hz = unit==="Hz"?val:unit==="kHz"?val*1000:val*1000000;
+    return {Hz:round2(hz), kHz:round2(hz/1000), MHz:round2(hz/1000000)};
+  },
+  pressure: (val, unit) => {
+    let pa = unit==="Pa"?val:unit==="kPa"?val*1000:val*100000;
+    return {Pa:round2(pa), kPa:round2(pa/1000), bar:round2(pa/100000)};
+  },
+  energy: (val, unit) => {
+    let J = unit==="J"?val:unit==="kJ"?val*1000:val*4.184;
+    return {J:round2(J), kJ:round2(J/1000), cal:round2(J/4.184)};
+  },
+  fuel: (val, unit) => unit==="MPG"?{"MPG":val,"L/100km":round2(235.215/val)}:{"MPG":round2(235.215/val),"L/100km":val},
+  storage: (val, unit) => {
+    let B = unit==="B"?val:unit==="KB"?val*1000:unit==="MB"?val*1e6:val*1e9;
+    return {B:round2(B), KB:round2(B/1000), MB:round2(B/1e6), GB:round2(B/1e9)};
+  },
+  datarate: (val, unit) => {
+    let bps = unit==="bps"?val:unit==="Bps"?val*8:unit==="Kbps"?val*1000:unit==="KBps"?val*8*1000:unit==="Mbps"?val*1e6:val*8e6;
+    return {bps:round2(bps), Bps:round2(bps/8), Kbps:round2(bps/1000), KBps:round2(bps/8000), Mbps:round2(bps/1e6), MBps:round2(bps/8e6)};
+  },
+  angle: (val, unit) => {
+    let deg = unit==="deg"?val:val*180/Math.PI;
+    return {deg:round2(deg), rad:round2(deg*Math.PI/180)};
+  }
+};
 
-// Length (m base)
-function convLength(val,unit){
-  let m=unit==="m"?val:unit==="cm"?val/100:unit==="km"?val*1000:unit==="ft"?val*0.3048:val*0.0254;
-  return {m:round2(m),cm:round2(m*100),km:round2(m/1000),ft:round2(m/0.3048),in:round2(m/0.0254),mi:round2(m/1609.344)};
-}
+// Units for each quantity
+const unitOptions = {
+  temperature:["C","F","K"],
+  length:["m","cm","km","ft","in","mi"],
+  mass:["kg","g","lb","oz"],
+  area:["m2","cm2","ft2"],
+  volume:["m3","L"],
+  speed:["m/s","km/h","mph"],
+  time:["s","min","h"],
+  frequency:["Hz","kHz","MHz"],
+  pressure:["Pa","kPa","bar"],
+  energy:["J","kJ","cal"],
+  fuel:["MPG","L/100km"],
+  storage:["B","KB","MB","GB"],
+  datarate:["bps","Bps","Kbps","KBps","Mbps","MBps"],
+  angle:["deg","rad"]
+};
 
-// Mass (kg base)
-function convMass(val,unit){
-  let kg=unit==="kg"?val:unit==="g"?val/1000:unit==="lb"?val/2.2046226218:val/35.274;
-  return {kg:round2(kg),g:round2(kg*1000),lb:round2(kg*2.2046226218),oz:round2(kg*35.274)};
-}
+// Update unit select when quantity changes
+const quantitySelect = document.getElementById("quantity");
+const converterArea = document.getElementById("converter-area");
+const unitSelect = document.getElementById("unit");
+const valueInput = document.getElementById("value");
+const resultDiv = document.getElementById("result");
 
-// Speed (m/s base)
-function convSpeed(val,unit){
-  let mps=unit==="m/s"?val:unit==="km/h"?val/3.6:val/2.23693629;
-  return {"m/s":round2(mps),"km/h":round2(mps*3.6),"mph":round2(mps*2.23693629)};
-}
-
-// Area (m² base)
-function convArea(val,unit){
-  let m2=unit==="m2"?val:unit==="cm2"?val/10000:val*0.092903;
-  return {m2:round2(m2),cm2:round2(m2*10000),ft2:round2(m2/0.092903)};
-}
-
-// Volume (m³ base)
-function convVolume(val,unit){
-  let m3=unit==="m3"?val:val/1000;
-  return {m3:round2(m3),L:round2(m3*1000)};
-}
-
-// Time (seconds base)
-function convTime(val,unit){
-  let s=unit==="s"?val:unit==="min"?val*60:val*3600;
-  return {s:round2(s),min:round2(s/60),h:round2(s/3600)};
-}
-
-// Frequency (Hz base)
-function convFreq(val,unit){
-  let hz=unit==="Hz"?val:unit==="kHz"?val*1000:val*1000000;
-  return {Hz:round2(hz),kHz:round2(hz/1000),MHz:round2(hz/1000000)};
-}
-
-// Pressure (Pa base)
-function convPressure(val,unit){
-  let pa=unit==="Pa"?val:unit==="kPa"?val*1000:val*100000;
-  return {Pa:round2(pa),kPa:round2(pa/1000),bar:round2(pa/100000)};
-}
-
-// Energy (J base)
-function convEnergy(val,unit){
-  let J=unit==="J"?val:unit==="kJ"?val*1000:val*4.184;
-  return {J:round2(J),kJ:round2(J/1000),cal:round2(J/4.184)};
-}
-
-// Fuel economy (L/100km ↔ MPG)
-function convFuel(val,unit){
-  if(unit==="MPG"){ let L=235.215/val; return {MPG:val,"L/100km":round2(L)}; }
-  else{ let MPG=235.215/val; return {MPG:round2(MPG),"L/100km":val}; }
-}
-
-// Digital storage (B base)
-function convStorage(val,unit){
-  let B=unit==="B"?val:unit==="KB"?val*1000:unit==="MB"?val*1e6:val*1e9;
-  return {B:round2(B),KB:round2(B/1000),MB:round2(B/1e6),GB:round2(B/1e9)};
-}
-
-// Data transfer rate (bps base)
-function convData(val,unit){
-  let bps=unit==="bps"?val:unit==="Bps"?val*8:unit==="Kbps"?val*1000:unit==="KBps"?val*8*1000:unit==="Mbps"?val*1e6:val*8e6;
-  return {bps:round2(bps),Bps:round2(bps/8),Kbps:round2(bps/1000),KBps:round2(bps/8000),Mbps:round2(bps/1e6),MBps:round2(bps/8e6)};
-}
-
-// Plane angle (deg base)
-function convAngle(val,unit){
-  let deg=unit==="deg"?val:val*180/Math.PI;
-  return {deg:round2(deg),rad:round2(deg*Math.PI/180)};
-}
-
-// General function
-function attachConverter(inputCls,unitCls,resultCls,converter){
-  document.querySelectorAll("."+inputCls+","+ "."+unitCls).forEach(el=>{
-    el.addEventListener("input",()=>{
-      let val=parseFloat(document.querySelector("."+inputCls).value);
-      let unit=document.querySelector("."+unitCls).value;
-      if(isNaN(val)) val=0;
-      let res=converter(val,unit);
-      document.querySelector("."+resultCls).textContent=Object.entries(res).map(([k,v])=>k+": "+v).join(", ");
+quantitySelect.addEventListener("change",()=>{
+  let q = quantitySelect.value;
+  if(q===""){
+    converterArea.style.display="none";
+    resultDiv.textContent="";
+  }else{
+    converterArea.style.display="block";
+    unitSelect.innerHTML="";
+    unitOptions[q].forEach(u=>{
+      let opt = document.createElement("option");
+      opt.value=u; opt.textContent=u;
+      unitSelect.appendChild(opt);
     });
-  });
+    valueInput.value=0;
+    resultDiv.textContent="";
+    updateResult();
+  }
+});
+
+function updateResult(){
+  let q = quantitySelect.value;
+  let val = parseFloat(valueInput.value);
+  let unit = unitSelect.value;
+  if(isNaN(val)) val=0;
+  let res = converters[q](val,unit);
+  resultDiv.textContent = Object.entries(res).map(([k,v])=>k+": "+v).join(", ");
 }
 
-// Attach converters
-attachConverter("temp-input","temp-unit","temp-result",convTemp);
-attachConverter("length-input","length-unit","length-result",convLength);
-attachConverter("mass-input","mass-unit","mass-result",convMass);
-attachConverter("speed-input","speed-unit","speed-result",convSpeed);
-attachConverter("area-input","area-unit","area-result",convArea);
-attachConverter("volume-input","volume-unit","volume-result",convVolume);
-attachConverter("time-input","time-unit","time-result",convTime);
-attachConverter("freq-input","freq-unit","freq-result",convFreq);
-attachConverter("pressure-input","pressure-unit","pressure-result",convPressure);
-attachConverter("energy-input","energy-unit","energy-result",convEnergy);
-attachConverter("fuel-input","fuel-unit","fuel-result",convFuel);
-attachConverter("storage-input","storage-unit","storage-result",convStorage);
-attachConverter("datarate-input","datarate-unit","datarate-result",convData);
-attachConverter("angle-input","angle-unit","angle-result",convAngle);
+// Event listeners for live conversion
+valueInput.addEventListener("input",updateResult);
+unitSelect.addEventListener("change",updateResult);
 </script>
 </body>
 </html>
