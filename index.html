@@ -3,72 +3,92 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fahrenheit to Celsius Converter | Free Online Temperature Tool</title>
-  <meta name="description" content="Free online Fahrenheit to Celsius converter. Instantly convert °F to °C or Celsius to Fahrenheit. Fast, simple, and accurate temperature conversion tool.">
-  <meta name="keywords" content="Fahrenheit to Celsius, Celsius to Fahrenheit, temperature converter, °F to °C, °C to °F, online converter">
+  <title>Fahrenheit to Celsius Converter | Animated Online Tool</title>
+  <meta name="description" content="Convert Fahrenheit to Celsius or Celsius to Fahrenheit with a smooth animated display. Free, fast, and stylish temperature converter.">
+  <meta name="keywords" content="Fahrenheit to Celsius, Celsius to Fahrenheit, temperature converter, animated converter, °F to °C, °C to °F, online tool">
   <meta name="robots" content="index, follow">
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: Arial, sans-serif;
-      background: #f7f9fc;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #74ebd5, #acb6e5);
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
     }
     .converter {
       background: white;
-      padding: 25px 35px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 35px 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
       text-align: center;
-      width: 340px;
+      width: 360px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    input, select {
-      padding: 8px;
-      margin: 10px 0;
+    .converter:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+    h1 { font-size: 24px; margin-bottom: 15px; color: #333; }
+    .intro { font-size: 14px; color: #666; margin-bottom: 20px; }
+    select, input {
       width: 100%;
-      box-sizing: border-box;
+      padding: 12px 10px;
+      margin-bottom: 15px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
       font-size: 16px;
       text-align: center;
+      outline: none;
+      transition: border 0.3s ease, box-shadow 0.3s ease;
     }
+    select:focus, input:focus { border-color: #0078d7; box-shadow: 0 0 8px rgba(0,120,215,0.3); }
     .result {
-      margin-top: 15px;
-      font-size: 18px;
+      margin-top: 20px;
+      font-size: 20px;
       font-weight: bold;
       color: #333;
+      background: #f1f5f9;
+      padding: 12px;
+      border-radius: 12px;
+      transition: background 0.3s ease;
     }
-    .intro {
-      font-size: 14px;
-      color: #555;
-      margin-bottom: 15px;
+    .result:hover { background: #e2e8f0; }
+    p.footer { margin-top: 20px; font-size: 12px; color: #888; }
+    @media(max-width: 400px){
+      .converter { width: 90%; padding: 25px 20px; }
+      h1 { font-size: 20px; }
+      .result { font-size: 18px; }
     }
   </style>
 </head>
 <body>
   <div class="converter">
     <h1>Fahrenheit ⇄ Celsius Converter</h1>
-    <p class="intro">
-      Instantly convert between Fahrenheit (°F) and Celsius (°C). 
-      This free online temperature converter is fast, accurate, and easy to use.
-    </p>
+    <p class="intro">Type a temperature and choose the unit. Watch it animate!</p>
     <select id="unit">
       <option value="F">Fahrenheit (°F)</option>
       <option value="C">Celsius (°C)</option>
     </select>
     <input type="number" id="inputTemp" placeholder="Enter temperature">
     <div class="result" id="result"></div>
-    <p style="margin-top:20px;font-size:13px;color:#666;">
-      Convert Fahrenheit to Celsius or Celsius to Fahrenheit instantly. 
-      Useful for weather, cooking, science, and more.
-    </p>
+    <p class="footer">Convert temperatures quickly for weather, cooking, or science.</p>
   </div>
 
   <script>
     const input = document.getElementById("inputTemp");
     const result = document.getElementById("result");
     const unit = document.getElementById("unit");
+
+    function animateValue(element, start, end, duration) {
+      let startTime = null;
+      const step = (timestamp) => {
+        if (!startTime) startTime = timestamp;
+        const progress = Math.min((timestamp - startTime) / duration, 1);
+        const value = (start + (end - start) * progress).toFixed(2);
+        element.textContent = value;
+        if (progress < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
 
     function convert() {
       const value = input.value;
@@ -78,11 +98,11 @@
       }
 
       if (unit.value === "F") {
-        const celsius = ((value - 32) * 5/9).toFixed(2);
-        result.textContent = `${value}°F = ${celsius}°C`;
+        const celsius = (value - 32) * 5/9;
+        animateValue(result, 0, celsius, 600);
       } else {
-        const fahrenheit = ((value * 9/5) + 32).toFixed(2);
-        result.textContent = `${value}°C = ${fahrenheit}°F`;
+        const fahrenheit = (value * 9/5) + 32;
+        animateValue(result, 0, fahrenheit, 600);
       }
     }
 
