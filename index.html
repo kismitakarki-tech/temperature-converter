@@ -46,10 +46,27 @@
 </div>
 
 <script>
-// Utilities
 function round2(x){return Math.round(x*100)/100}
 
-// Converters
+// Units for each quantity
+const unitOptions = {
+  temperature:["C","F","K"], 
+  length:["m","cm","km","ft","in","mi"], 
+  mass:["kg","g","lb","oz"], 
+  area:["m2","cm2","ft2"], 
+  volume:["m3","L"],
+  speed:["m/s","km/h","mph"], 
+  time:["s","min","h"], 
+  frequency:["Hz","kHz","MHz"], 
+  pressure:["Pa","kPa","bar"], 
+  energy:["J","kJ","cal"], 
+  fuel:["MPG","L/100km"], 
+  storage:["B","KB","MB","GB"], 
+  datarate:["bps","Bps","Kbps","KBps","Mbps","MBps"], 
+  angle:["deg","rad"]
+};
+
+// Conversion functions
 const converters = {
   temperature: (val, unit) => { let c=unit==="C"?val:unit==="F"?(val-32)*5/9:val-273.15; return {C:round2(c), F:round2(c*9/5+32), K:round2(c+273.15)}; },
   length: (val, unit) => { let m=unit==="m"?val:unit==="cm"?val/100:unit==="km"?val*1000:unit==="ft"?val*0.3048:val*0.0254; return {m:round2(m), cm:round2(m*100), km:round2(m/1000), ft:round2(m/0.3048), in:round2(m/0.0254), mi:round2(m/1609.344)}; },
@@ -59,7 +76,7 @@ const converters = {
   speed: (val, unit) => { let mps=unit==="m/s"?val:unit==="km/h"?val/3.6:val/2.23693629; return {"m/s":round2(mps), "km/h":round2(mps*3.6), mph:round2(mps*2.23693629)}; },
   time: (val, unit) => { let s=unit==="s"?val:unit==="min"?val*60:val*3600; return {s:round2(s), min:round2(s/60), h:round2(s/3600)}; },
   frequency: (val, unit) => { let hz=unit==="Hz"?val:unit==="kHz"?val*1000:val*1000000; return {Hz:round2(hz), kHz:round2(hz/1000), MHz:round2(hz/1000000)}; },
-  pressure: (val, unit) => { let pa=unit==="Pa"?val:unit==="kPa"?val*1000:val*100000; return {Pa:round2(pa), kPa:round2(pa/1000), bar:round2(pa/100000)}; },
+  pressure: (val, unit) => { let pa=unit==="Pa"?val:unit==="kPa"?val*1000:val==="bar"?val*100000:val; return {Pa:round2(pa), kPa:round2(pa/1000), bar:round2(pa/100000)}; },
   energy: (val, unit) => { let J=unit==="J"?val:unit==="kJ"?val*1000:val*4.184; return {J:round2(J), kJ:round2(J/1000), cal:round2(J/4.184)}; },
   fuel: (val, unit) => unit==="MPG"?{"MPG":val,"L/100km":round2(235.215/val)}:{"MPG":round2(235.215/val),"L/100km":val},
   storage: (val, unit) => { let B=unit==="B"?val:unit==="KB"?val*1000:unit==="MB"?val*1e6:val*1e9; return {B:round2(B), KB:round2(B/1000), MB:round2(B/1e6), GB:round2(B/1e9)}; },
@@ -75,15 +92,16 @@ const resultBody = document.getElementById("result-body");
 function updateTable(){
   const q = quantitySelect.value;
   let val = parseFloat(valueInput.value);
-  let unit = "default"; // We'll take first unit as default
-  if(isNaN(val)) val=0;
-  if(q==="") { resultTable.style.display="none"; return; }
-  unit = Object.keys(converters )[0]))[0]; // pick first unit as base
-  const res = converters[q](val, unit);
+  if(q==="" || isNaN(val)) {
+    resultTable.style.display="none"; return;
+  }
+  // Use the first unit as the base unit
+  const baseUnit = unitOptions[q][0];
+  const res = converters[q](val, baseUnit);
   resultBody.innerHTML = "";
   for(const [u,v] of Object.entries(res)){
     const row = document.createElement("tr");
-    row.innerHTML=`<td>${u}</td><td>${v}</td>`;
+    row.innerHTML = `<td>${u}</td><td>${v}</td>`;
     resultBody.appendChild(row);
   }
   resultTable.style.display="table";
@@ -91,7 +109,6 @@ function updateTable(){
 
 quantitySelect.addEventListener("change", updateTable);
 valueInput.addEventListener("input", updateTable);
-
 </script>
 </body>
 </html>
